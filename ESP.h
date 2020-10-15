@@ -1,7 +1,7 @@
 #pragma once
 namespace ESP
 {
-     void Run( Entity::CEntity * Entity)
+     void Run( Entities::CEntity * Entity)
      {
 		auto Matrix = reinterpret_cast< float * >( Globals::Var::MatrixPTR );
 

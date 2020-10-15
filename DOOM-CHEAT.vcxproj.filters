@@ -84,5 +84,8 @@
     <ClInclude Include="ESP.h">
       <Filter>Arquivos de Recurso\Functions</Filter>
     </ClInclude>
+    <ClInclude Include="Aimbot.h">
+      <Filter>Arquivos de Recurso\Functions</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

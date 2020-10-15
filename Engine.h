@@ -1,6 +1,8 @@
 #pragma once
 namespace Engine
 {
+	double PI = 3.1415927f;
+
 	struct Vec4
 	{
 		float x , y , z, w;
@@ -16,6 +18,22 @@ namespace Engine
 			y += fl_Any;
 			z += fl_Any;
 			return *this;
+		}
+
+		float GetLength( ) const
+		{
+			return std::sqrt( x * x + y * y + z * z );
+		}
+
+		float GetDistance( const Vec3 & Src ) const
+		{
+			Vec3 delta;
+
+			delta.x = x - Src.x;
+			delta.y = y - Src.y;
+			delta.z = z - Src.z;
+
+			return delta.GetLength( );
 		}
 	};
 
@@ -88,7 +106,16 @@ namespace Engine
 		ToScreen.y = -( Height / 2 * Screen.y ) + ( Screen.y + Height / 2 );
 		return true;
 	}
+	 
+	Vec3 CalcAngle( Vec3 Local , Vec3 Entity )
+	{
+		Vec3 FinalAngle;
+		FinalAngle.x = -atan2f( Entity.x - Local.x , Entity.y - Local.y ) / PI * 180.0f + 360.0f;
+		FinalAngle.y = asinf( ( Entity.z - Local.z ) / Local.GetDistance( Entity) ) * 180.0f / PI;
+		FinalAngle.z = 0.0f;
 
+		return FinalAngle;
+	}
 
 	bool Timer( uintptr_t &TickCounter, uintptr_t TimeElepsed)
 	{

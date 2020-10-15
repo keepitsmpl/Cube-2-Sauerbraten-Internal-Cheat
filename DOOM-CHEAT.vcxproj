@@ -148,6 +148,7 @@
     <ClCompile Include="MinHook\trampoline.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Aimbot.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="ESP.h" />

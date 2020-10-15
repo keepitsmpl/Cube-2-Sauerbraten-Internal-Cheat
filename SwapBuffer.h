@@ -37,12 +37,12 @@ namespace SwapBuffer
 
 		auto CallFunctions=[]()
 		{
-			Entity::CEntity * Local = ( Entity::CEntity * ) ( *reinterpret_cast< uintptr_t * >( Globals::Var::LocalPTR ) );
+			Entities::CEntity * Local = ( Entities::CEntity * ) ( *reinterpret_cast< uintptr_t * >( Globals::Var::LocalPTR ) );
 
 			if ( !Local )
 				return;
 
-			Entity::CEntityList * EntityList = ( Entity::CEntityList * ) ( Globals::Var::EntityPTR );
+			Entities::CEntityList * EntityList = ( Entities::CEntityList * ) ( Globals::Var::EntityPTR );
 
 			if ( !EntityList )
 				return;
@@ -51,7 +51,7 @@ namespace SwapBuffer
 
 			for ( int i = 0; i < EntityList->NumBots; i++ )
 			{
-				Entity::CEntity * Entity = ( Entity::CEntity * ) ( *reinterpret_cast< uintptr_t * > ( EntityPointer + i * 4 ) );
+				Entities::CEntity * Entity = ( Entities::CEntity * ) ( *reinterpret_cast< uintptr_t * > ( EntityPointer + i * 4 ) );
 
 				if ( !Entity )
 					continue;
@@ -62,9 +62,10 @@ namespace SwapBuffer
 				if ( Entity->Health <= 0 )
 					continue;
 
-				Entity::FreezBot( Local , Entity );
+			//	Entities::FreezBot( Local , Entity );
 
 				ESP::Run( Entity );
+				Aimbot::Run( Local , Entity );
 			}
 		};
 		CallFunctions( );

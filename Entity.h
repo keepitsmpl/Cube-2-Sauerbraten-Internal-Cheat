@@ -1,6 +1,5 @@
 #pragma once
-
-namespace Entity
+namespace Entities
 {
      class CEntity
      {

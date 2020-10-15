@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "Entity.h"
 #include "ESP.h"
+#include "Aimbot.h"
 #include "SwapBuffer.h"
 
 namespace Sdk
