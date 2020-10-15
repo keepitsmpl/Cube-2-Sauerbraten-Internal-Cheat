@@ -35,7 +35,39 @@ namespace SwapBuffer
 
 		wglMakeCurrent( hdc , MyCtx );
 
-		Entity::Run( );
+		auto CallFunctions=[]()
+		{
+			Entity::CEntity * Local = ( Entity::CEntity * ) ( *reinterpret_cast< uintptr_t * >( Globals::Var::LocalPTR ) );
+
+			if ( !Local )
+				return;
+
+			Entity::CEntityList * EntityList = ( Entity::CEntityList * ) ( Globals::Var::EntityPTR );
+
+			if ( !EntityList )
+				return;
+
+			auto EntityPointer = *reinterpret_cast< uintptr_t * >( EntityList );
+
+			for ( int i = 0; i < EntityList->NumBots; i++ )
+			{
+				Entity::CEntity * Entity = ( Entity::CEntity * ) ( *reinterpret_cast< uintptr_t * > ( EntityPointer + i * 4 ) );
+
+				if ( !Entity )
+					continue;
+
+				if ( Entity == Local )
+					continue;
+
+				if ( Entity->Health <= 0 )
+					continue;
+
+				Entity::FreezBot( Local , Entity );
+
+				ESP::Run( Entity );
+			}
+		};
+		CallFunctions( );
 
 		wglMakeCurrent( hdc , GameCtx );
 

@@ -29,6 +29,7 @@ namespace Entity
 			return this->Origin;
 		}
 
+		//TODO: origin.z += eyepos.
 		Engine::Vec3 GetFeetPos( )
 		{
 			auto GetFeetPosFn = ( Engine::Vec3( __thiscall * )( CEntity * ) )( ( uint32_t ) Globals::Var::FootPosFN );
@@ -45,7 +46,6 @@ namespace Entity
 		int32_t MaxBots; //0x14
 	};
 
-	//move to sdk
 	void FreezBot( CEntity * Local, CEntity * Entity )
 	{
 		static bool Once = true;
@@ -59,65 +59,4 @@ namespace Entity
 		else
 			Entity->MyPos = OldPos;
 	}
- 
-     void Run()
-	{
-		CEntity * Local = ( CEntity * ) ( *reinterpret_cast< uintptr_t * >( Globals::Var::LocalPTR ) );
-
-		if ( !Local )
-			return;
-
-		CEntityList * EntityList = ( CEntityList * ) ( Globals::Var::EntityPTR );
-
-		if ( !EntityList )
-			return;
-
-		auto EntityPointer = *reinterpret_cast< uintptr_t * >( EntityList );
-
-		auto Matrix = reinterpret_cast< float * >( Globals::Var::MatrixPTR );
-
-		for ( int i = 0; i < EntityList->NumBots; i++ )
-		{
-			CEntity * Entity = ( CEntity * ) ( *reinterpret_cast< uintptr_t * > ( EntityPointer + i * 4 ) );
-
-			if ( !Entity )
-				continue;
-
-			if ( Entity == Local )
-				continue;
-
-			if ( Entity->Health <= 0 )
-				continue;
-
-			FreezBot( Local, Entity );
-
-			Engine::Vec3 HeadToScreen , FootToScreen;
-
-			if ( !Engine::WorldToScreen( Entity->GetHeadPos() , HeadToScreen , Matrix ) )
-				continue;
-
-			if ( !Engine::WorldToScreen( Entity->GetFeetPos() , FootToScreen , Matrix ) )
-				continue;
-	
-			float Height = std::abs( HeadToScreen.y - FootToScreen.y ) ;
-			float Width = Height / 2.5f;
-
-			//HEALTH
-			float BarProgress = ( Entity->Health * Height ) / Entity->MaxHealth;
-
-			Engine::Drawing::DrawFilledRect( HeadToScreen.x - ( Width + 8.f ) , FootToScreen.y  , 3 , Height , Engine::Drawing::Black );
-
-			Engine::Drawing::DrawFilledRect( HeadToScreen.x - ( Width + 8.f ) , FootToScreen.y , 3, BarProgress  , Engine::Drawing::Green );
-
-			//LINE
-			float ScreenX = 800 , ScreenY = 480;//TODO: Get Screen Cords dynamically
-
-			Engine::Drawing::Line( ScreenX / 2 , ScreenY - 1 , FootToScreen.x , FootToScreen.y, Engine::Drawing::Green );
-
-			//BOX
-			Engine::Drawing::DrawOutlinedBox( HeadToScreen.x - Width , HeadToScreen.y , Width * 2 , Height , 1 , Engine::Drawing::Red );
-
-
-		}
-     }
-}
+ }

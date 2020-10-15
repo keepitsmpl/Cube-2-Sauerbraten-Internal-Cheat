@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="ESP.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Headers.h" />
     <ClInclude Include="MinHook\buffer.h" />

@@ -14,6 +14,9 @@
     <Filter Include="Arquivos de Recurso\SDK">
       <UniqueIdentifier>{c8c0c218-b878-4e40-b61a-3d857495b183}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Arquivos de Recurso\Functions">
+      <UniqueIdentifier>{4f81c4ff-fa16-4917-aa1b-6aa5dd230080}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MinHook\buffer.c">
@@ -77,6 +80,9 @@
     </ClInclude>
     <ClInclude Include="Headers.h">
       <Filter>Arquivos de Recurso</Filter>
+    </ClInclude>
+    <ClInclude Include="ESP.h">
+      <Filter>Arquivos de Recurso\Functions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
