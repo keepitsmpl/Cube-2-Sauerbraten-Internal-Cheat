@@ -14,8 +14,6 @@ namespace Sdk
 			Globals::Var::EntityPTR = static_cast< uintptr_t >( ( uintptr_t ) Globals::Var::Base + 0x29CD34 );
 			Globals::Var::MatrixPTR = static_cast< uintptr_t >( ( uintptr_t ) Globals::Var::Base + 0x297AF0 );
 			Globals::Var::FootPosFN = static_cast< uintptr_t >( ( uintptr_t ) Globals::Var::Base + 0x6D090 );
-			Globals::Var::FootPosFN = static_cast< uintptr_t >( ( uintptr_t ) Globals::Var::Base + 0x6D090 );
-
 			{
 				printf( "Base: %p / Local: %p / Entity: %p / Matrix: %p / FootPosFn : %p\n" , Globals::Var::Base, Globals::Var::LocalPTR , Globals::Var::EntityPTR, Globals::Var::MatrixPTR, Globals::Var::FootPosFN);
 			}

@@ -1,8 +1,8 @@
 #pragma once
 namespace SwapBuffer
 {
-     typedef BOOL( __stdcall * SawpBufferFN ) ( HDC );
-	SawpBufferFN OriginalSwapBufferFN;
+     typedef BOOL( __stdcall * SwapBufferFN ) ( HDC );
+	SwapBufferFN OriginalSwapBufferFN;
 
 	HGLRC MyCtx;
 	HGLRC GameCtx;
