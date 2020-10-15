@@ -9,6 +9,14 @@ namespace Engine
 	struct Vec3
 	{
 		float x , y , z;
+
+		Vec3 & operator+=( float fl_Any )
+		{
+			x += fl_Any;
+			y += fl_Any;
+			z += fl_Any;
+			return *this;
+		}
 	};
 
 	namespace Drawing
@@ -20,12 +28,13 @@ namespace Engine
 
 		void DrawFilledRect( float x , float y , float width , float height , const GLubyte color [ 3 ] )
 		{
-			glColor3ub( color [ 0 ] , color [ 1 ] , color [ 2 ] );
 			glBegin( GL_QUADS );
-			glVertex2f( x , y );
-			glVertex2f( x + width , y );
-			glVertex2f( x + width , y + height );
-			glVertex2f( x , y + height );
+			glColor3ub( color [ 0 ] , color [ 1 ] , color [ 2 ] );
+			glVertex2f( x - 0.5f , y - 0.5f );
+			glVertex2f( x + width + 0.5f , y - 0.5f );
+			glVertex2f( x + width + 0.5f , y - height + 0.5f );
+			glVertex2f( x - 0.5f , y - height + 0.5f );
+			glVertex2f( x - 0.5f , y - 0.5f );
 			glEnd( );
 		}
 
@@ -39,6 +48,22 @@ namespace Engine
 			glVertex2f( x + width + 0.5f , y + height + 0.5f );
 			glVertex2f( x - 0.5f , y + height + 0.5f );
 			glVertex2f( x - 0.5f , y - 0.5f );
+			glEnd( );
+		}
+
+		void DrawOutlinedBox( float x , float y , float width , float height , float lineWidth , const GLubyte color [ 3 ] )
+		{
+			DrawRect( x , y , width , height , lineWidth , color );
+			DrawRect( x + 1, y + 1 , width - 2 , height - 2 , lineWidth , Black );
+			DrawRect( x -1 , y - 1 , width  + 2, height + 2, lineWidth , Black );
+		}
+
+		void Line( float x1 , float y1 , float x2 , float y2, const GLubyte color [ 3 ] )
+		{
+			glBegin( GL_LINES );
+			glColor3ub( color [ 0 ] , color [ 1 ] , color [ 2 ] );		
+			glVertex2f( x1 , y1 );
+			glVertex2f( x2 , y2 );
 			glEnd( );
 		}
 	}
