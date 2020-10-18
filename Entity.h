@@ -1,40 +1,105 @@
 #pragma once
 namespace Entities
 {
-     class CEntity
-     {
-     public:
-		Engine::Vec3 Origin; //0x0000
-		char pad_000C [ 36 ]; //0x000C
-		Engine::Vec3 MyPos; //0x0030
-		Engine::Vec3 ViewAngles; //0x003C
-		char pad_0048 [ 8 ]; //0x0048
-		float Radius; //0x0050
-		float EyeHeight; //0x0054
-		float AboveEye; //0x0058
-		float XRadius; //0x005C
-		float YRadius; //0x0060
-		char pad_0064 [ 248 ]; //0x0064
-		int32_t Health; //0x015C
-		int32_t MaxHealth; //0x0160
-		int32_t Armor; //0x0164
-		char pad_0168 [ 36 ]; //0x0168
-		int32_t SecondaryAmmo; //0x018C
-		int32_t PrimaryAmmo; //0x0190
-		char pad_0194 [ 3800 ]; //0x0194
+	class CPhysEnt                                  // base entity type, can be affected by physics
+	{
+	public:
+		Engine::Vec3  o , vel , falling;                        // origin, velocity
+		Engine::Vec3  deltapos , newpos;                       // movement interpolation
+		float yaw , pitch , roll;
+		float maxspeed;                             // cubes per second, 100 for player
+		int timeinair;
+		float radius , eyeheight , aboveeye;          // bounding box size
+		float xradius , yradius , zmargin;
+		Engine::Vec3 floor;                                  // the normal of floor the dynent is on
 
-		Engine::Vec3 GetHeadPos( )
+		int inwater;
+		bool jumping;
+		char move , strafe;
+
+		unsigned char  physstate;                            // one of PHYS_* above
+		unsigned char  state , editstate;                     // one of CS_* above
+		unsigned char  type;                                 // one of ENT_* above
+		unsigned char  collidetype;                          // one of COLLIDE_* above           
+
+		bool blocked;                               // used by physics to signal ai
+
+		Engine::Vec3 feetpos( float offset = 0 ) const
 		{
-			return this->Origin;
+			return Engine::Vec3( o ).add( Engine::Vec3( 0 , 0 , offset - eyeheight ) );
 		}
 
-		//TODO: origin.z += eyepos.
-		Engine::Vec3 GetFeetPos( )
+		Engine::Vec3 headpos( float offset = 0 ) const
 		{
-			auto GetFeetPosFn = ( Engine::Vec3( __thiscall * )( CEntity * ) )( ( uint32_t ) Globals::Var::FootPosFN );
-			return GetFeetPosFn( this );
+			return Engine::Vec3( o ).add( Engine::Vec3( 0 , 0 , offset ) );
 		}
-     };
+	};
+
+	class CDynEnt : public CPhysEnt                         
+	{
+	public:
+		bool k_left , k_right , k_up , k_down;         
+
+		void* light;
+		void * animinterp;
+		void * ragdoll;
+		void * query;
+		int occluded , lastrendered;
+	};
+
+	class CFPSState
+	{
+	public:
+		int health , maxhealth;
+		int armour , armourtype;
+		int quadmillis;
+		int gunselect , gunwait;
+		int ammo [ NUMGUNS ];
+		int aitype , skill;
+	};
+
+	class CAI_State
+	{
+		int type , millis , targtype , target , idle;
+		bool override;
+	};
+
+	class CAI_Info
+	{
+	public:
+		std::vector<CAI_State> state;
+		std::vector<int> route;
+		Engine::Vec3  target , spot;
+		int enemy , enemyseen , enemymillis , weappref , prevnodes [ 6 ] , targnode , targlast , targtime , targseq ,
+			lastrun , lasthunt , lastaction , lastcheck , jumpseed , jumprand , blocktime , huntseq , blockseq , lastaimrnd;
+		float targyaw , targpitch , views [ 3 ] , aimrnd [ 3 ];
+		bool dontmove , becareful , tryreset , trywipe;
+	};
+
+	class CFPSEnt : public CDynEnt ,  public CFPSState
+	{
+	public:
+		int weight;                         
+		int clientnum , privilege , lastupdate , plag , ping;
+		int lifesequence;                 
+		int respawned , suicided;
+		int lastpain;
+		int lastaction , lastattackgun;
+		bool attacking;
+		int attacksound , attackchan , idlesound , idlechan;
+		int lasttaunt;
+		int lastpickup , lastpickupmillis , lastbase , lastrepammo , flagpickup , tokens;
+		Engine::Vec3  lastcollect;
+		int frags , flags , deaths , totaldamage , totalshots;
+		void * edit; //editinfo*
+		float deltayaw , deltapitch , deltaroll , newyaw , newpitch , newroll;
+		int smoothmillis;
+
+		std::string name , team , info;
+		int playermodel;
+		CAI_Info * ai;
+		int ownernum , lastnode;
+	};
 
 	class CEntityList
 	{
@@ -44,18 +109,4 @@ namespace Entities
 		char pad_000C [ 0x8 ]; 
 		int32_t MaxBots; //0x14
 	};
-
-	void FreezBot( CEntity * Local, CEntity * Entity )
-	{
-		static bool Once = true;
-		static Engine::Vec3 OldPos;
-
-		if ( Once )
-		{
-			OldPos = Local->MyPos;
-			Once = false;
-		}
-		else
-			Entity->MyPos = OldPos;
-	}
  }

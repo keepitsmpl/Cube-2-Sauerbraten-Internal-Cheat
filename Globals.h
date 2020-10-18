@@ -4,7 +4,7 @@ namespace Globals
      namespace Var
      {
           HMODULE Base = 0;
-          uintptr_t LocalPTR = 0, EntityPTR = 0, MatrixPTR = 0, FootPosFN = 0;
+          uintptr_t LocalPTR = 0, EntityPTR = 0, MatrixPTR = 0, FootPosFN = 0, RayEntFN = 0;
      }
 
      namespace Mem

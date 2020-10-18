@@ -151,6 +151,7 @@
     <ClInclude Include="Aimbot.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Enums.h" />
     <ClInclude Include="ESP.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Headers.h" />

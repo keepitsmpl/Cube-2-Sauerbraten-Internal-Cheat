@@ -87,5 +87,8 @@
     <ClInclude Include="Aimbot.h">
       <Filter>Arquivos de Recurso\Functions</Filter>
     </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Arquivos de Recurso\SDK</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
